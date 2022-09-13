@@ -156,7 +156,7 @@ export const swap = async (
   if (!pool || !components[0].account) {
     notify({
       type: "error",
-      message: `Pool doesn't exsist.`,
+      message: `Pool doesn't exist.`,
       description: `Swap trade cancelled`,
     });
     return;
@@ -395,7 +395,7 @@ export const usePools = () => {
   useEffect(() => {
     const subID = connection.onProgramAccountChange(
       programIds().swap,
-      async (info) => {
+      async (info:any) => {
         const id = (info.accountId as unknown) as string;
         if (info.accountInfo.data.length === TokenSwapLayout.span) {
           const account = info.accountInfo;
@@ -470,7 +470,8 @@ export const usePoolForBasket = (mints: (string | undefined)[]) => {
         }
       }
     })();
-  }, [connection, ...sortedMints, pools]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [connection, pools, ...sortedMints]);
 
   return pool;
 };

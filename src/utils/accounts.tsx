@@ -7,6 +7,7 @@ import { AccountLayout, u64, MintInfo, MintLayout } from "@solana/spl-token";
 import { usePools } from "./pools";
 import { TokenAccount, PoolInfo } from "./../models";
 import { notify } from "./notifications";
+import { Buffer } from "buffer";
 
 const AccountsContext = React.createContext<any>(null);
 
@@ -291,6 +292,7 @@ export function AccountsProvider({ children = null as any }) {
         connection.removeProgramAccountChangeListener(tokenSubID);
       };
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connection, connected, wallet?.publicKey]);
 
   return (

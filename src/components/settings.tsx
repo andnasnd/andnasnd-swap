@@ -75,7 +75,6 @@ export const Settings = () => {
   return (
     <>
       <div>
-        Transactions: Settings:
         <div>
           Slippage:
           <Slippage />
