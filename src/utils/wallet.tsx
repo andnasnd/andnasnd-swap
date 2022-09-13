@@ -4,9 +4,9 @@ import React, {
   useEffect,
   useMemo,
   useState,
-} from "react";
+} from 'react';
 import Wallet from "@project-serum/sol-wallet-adapter";
-import { Button, Modal } from "antd";
+import { Button, Modal } from 'antd';
 import {
   WalletAdapter,
   SolongWalletAdapter,

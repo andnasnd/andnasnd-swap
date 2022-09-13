@@ -327,11 +327,11 @@ export const usePools = () => {
       let poolsArray: PoolInfo[] = [];
       (await connection.getProgramAccounts(swapId))
         .filter(
-          (item) =>
+          (item: { account: { data: string | any[]; }; }) =>
             item.account.data.length === TokenSwapLayout.span ||
             item.account.data.length === TokenSwapLayoutLegacyV0.span
         )
-        .map((item) => {
+        .map((item: { account: { data: string | any[]; }; pubkey: any; }) => {
           let result = {
             data: undefined as any,
             account: item.account,
@@ -407,11 +407,11 @@ export const usePools = () => {
 
           const index =
             pools &&
-            pools.findIndex((p) => p.pubkeys.account.toBase58() === id);
+            pools.findIndex((p: { pubkeys: { account: { toBase58: () => string; }; }; }) => p.pubkeys.account.toBase58() === id);
           if (index && index >= 0 && pools) {
             // TODO: check if account is empty?
 
-            const filtered = pools.filter((p, i) => i !== index);
+            const filtered = pools.filter((p: any, i: any) => i !== index);
             setPools([...filtered, toPoolInfo(updated, programIds().swap)]);
           } else {
             let pool = toPoolInfo(updated, programIds().swap);

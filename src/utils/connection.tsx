@@ -5,8 +5,8 @@ import {
   Connection,
   Transaction,
   TransactionInstruction,
-} from "@solana/web3.js";
-import React, { useContext, useEffect, useMemo } from "react";
+} from '@solana/web3.js';
+import React, { useContext, useEffect, useMemo } from 'react';
 import { setProgramIds } from "./ids";
 import { notify } from "./notifications";
 

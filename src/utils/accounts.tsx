@@ -1,9 +1,9 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useConnection } from "./connection";
 import { useWallet } from "./wallet";
-import { AccountInfo, Connection, PublicKey } from "@solana/web3.js";
+import { AccountInfo, Connection, PublicKey } from '@solana/web3.js';
 import { programIds, SWAP_HOST_FEE_ADDRESS, WRAPPED_SOL_MINT } from "./ids";
-import { AccountLayout, u64, MintInfo, MintLayout } from "@solana/spl-token";
+import { AccountLayout, u64, MintInfo, MintLayout } from '@solana/spl-token';
 import { usePools } from "./pools";
 import { TokenAccount, PoolInfo } from "./../models";
 import { notify } from "./notifications";
@@ -161,12 +161,12 @@ const UseNativeAccount = () => {
       return;
     }
 
-    connection.getAccountInfo(wallet.publicKey).then((acc) => {
+    connection.getAccountInfo(wallet.publicKey).then((acc: any) => {
       if (acc) {
         setNativeAccount(acc);
       }
     });
-    connection.onAccountChange(wallet.publicKey, (acc) => {
+    connection.onAccountChange(wallet.publicKey, (acc: any) => {
       if (acc) {
         setNativeAccount(acc);
       }
@@ -193,7 +193,7 @@ const precacheUserTokenAccounts = async (
     programId: programIds().token,
   });
   accounts.value
-    .map((info) => {
+    .map((info: { account: { data: Buffer; }; pubkey: any; }) => {
       const data = deserializeAccount(info.account.data);
       // need to query for mint to get decimals
 
@@ -208,7 +208,7 @@ const precacheUserTokenAccounts = async (
 
       return details;
     })
-    .forEach((acc) => {
+    .forEach((acc: TokenAccount) => {
       accountsCache.set(acc.pubkey.toBase58(), acc);
     });
 };
@@ -251,12 +251,12 @@ export function AccountsProvider({ children = null as any }) {
       // TODO: web3.js expose ability to filter. discuss filter syntax
       const tokenSubID = connection.onProgramAccountChange(
         programIds().token,
-        (info) => {
+        (info: { accountId: unknown; accountInfo: { data: string | any[] | Buffer; }; }) => {
           // TODO: fix type in web3.js
           const id = (info.accountId as unknown) as string;
           // TODO: do we need a better way to identify layout (maybe a enum identifing type?)
           if (info.accountInfo.data.length === AccountLayout.span) {
-            const data = deserializeAccount(info.accountInfo.data);
+            const data = deserializeAccount(info.accountInfo.data?.[0]);
             // TODO: move to web3.js for decoding on the client side... maybe with callback
             const details = {
               pubkey: new PublicKey((info.accountId as unknown) as string),
@@ -276,7 +276,7 @@ export function AccountsProvider({ children = null as any }) {
             }
           } else if (info.accountInfo.data.length === MintLayout.span) {
             if (mintCache.has(id)) {
-              const data = Buffer.from(info.accountInfo.data);
+              const data = Buffer.from(info.accountInfo.data?.[0]);
               const mint = deserializeMint(data);
               mintCache.set(id, new Promise((resolve) => resolve(mint)));
               accountEmitter.raiseAccountUpdated(id);
